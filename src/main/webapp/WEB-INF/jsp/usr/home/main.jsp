@@ -66,41 +66,38 @@ td.slide img {
 			<div>
 		메인 그림
 		</div>
+		<script src="/resource/mainSlideBtn.js"></script>
 		
-    <div class="slider">
-        <table>
-            <tr class="slides">
-                <!-- Thymeleaf를 사용하여 상품 이미지를 반복 출력 -->
-                <c:forEach var="product" items="${products}">
-                    <td class="slide">
-                        <img th:src="${product }" alt="상품">
-                    </td>
-                </c:forEach>
-            </tr>
-        </table>
-        <!-- 네비게이션 버튼 -->
-        <script src="/js/script.js"></script>
-        <button class="prev" onclick="prevSlide()">&#10094;</button>
-        <button class="next" onclick="nextSlide()">&#10095;</button>
-    </div>
-    
-    
-    <div class="slider">
-        <table>
-            <tr class="slides">
-                <!-- Thymeleaf를 사용하여 상품 이미지를 반복 출력 -->
-                <c:forEach var="product" items="${products}">
-                    <td class="slide">
-                        <img th:src="${product }" alt="상품">
-                    </td>
-                </c:forEach>
-            </tr>
-        </table>
-        <!-- 네비게이션 버튼 -->
-        <script src="/js/script.js"></script>
-        <button class="prev" onclick="prevSlide()">&#10094;</button>
-        <button class="next" onclick="nextSlide()">&#10095;</button>
-    </div>
+<div class="slider" id="slider1">
+    <table>
+        <tr class="slides">
+            <c:forEach var="product" items="${products}">
+                <td class="slide">
+                    <img th:src="${product}" alt="상품">
+                </td>
+            </c:forEach>
+        </tr>
+    </table>
+    <button class="prev" onclick="prevSlide(1)">&#10094;</button>
+    <button class="next" onclick="nextSlide(1)">&#10095;</button>
+</div>
+
+<div class="slider" id="slider2">
+    <table>
+        <tr class="slides">
+            <c:forEach var="product" items="${products}">
+                <td class="slide">
+                    <img th:src="${product}" alt="상품">
+                </td>
+            </c:forEach>
+        </tr>
+    </table>
+    <button class="prev" onclick="prevSlide(2)">&#10094;</button>
+    <button class="next" onclick="nextSlide(2)">&#10095;</button>
+</div>
+
+        
 	
 
 </body>
+<%@ include file="../common/foot.jspf"%>
