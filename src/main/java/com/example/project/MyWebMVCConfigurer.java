@@ -14,9 +14,17 @@ import com.example.project.interceptor.NeedLogoutInterceptor;
 
 @Configuration
 public class MyWebMVCConfigurer implements WebMvcConfigurer {
+	
+	@Value("${custom.genFileDirPath}")
+	private String genFileDirPath;
 
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/gen/**").addResourceLocations("file:///" + genFileDirPath + "/")
+				.setCachePeriod(20);
+	}
 
-
+	
 	// BeforeActionInterceptor 불러오기(연결)
 	@Autowired
 	BeforeActionInterceptor beforeActionInterceptor;
@@ -28,6 +36,7 @@ public class MyWebMVCConfigurer implements WebMvcConfigurer {
 	// NeedLogoutInterceptor 불러오기(연결)
 	@Autowired
 	NeedLogoutInterceptor needLogoutInterceptor;
+
 
 	// 인터셉터 등록(적용)
 	public void addInterceptors(InterceptorRegistry registry) {

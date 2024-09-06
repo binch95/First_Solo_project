@@ -78,8 +78,12 @@
   width: 100%;
 }
 
-
-
+.logo-btn>a{
+font-size: 2rem;
+}
+.mainMenuBar> ul li{
+cursor: pointer;
+}
 
 </style>
 
@@ -125,16 +129,16 @@
 		
 		<div class="mainMenuBar flex justify-center mt-16">
 		<ul>
-			<li><a href="#"></a>전자제품</li>
-			<li><a href="#"></a>가구 및 인테리어</li>
-			<li><a href="#"></a>패션 및 악세서리</li>
-			<li><a href="#"></a>스포츠 및 레저</li>
-			<li><a href=""></a>도서 및 문구</li>
-			<li><a href=""></a>자동차 및 오토바이</li>
-			<li><a href=""></a>홈 및 주방용품</li>
-			<li><a href=""></a>공구 및 원예</li>
-			<li><a href=""></a>수집품 및 엔티크</li>
-			<li><a href=""></a>기타</li>
+			<li><a href="../article/list?boardId=1&page=1">전자제품</a></li>
+			<li><a href="../article/list?boardId=2&page=1">가구 및 인테리어</a></li>
+			<li><a href="../article/list?boardId=3&page=1">패션 및 악세서리</a></li>
+			<li><a href="../article/list?boardId=4&page=1">스포츠 및 레저</a></li>
+			<li><a href="../article/list?boardId=5&page=1">도서 및 문구</a></li>
+			<li><a href="../article/list?boardId=6&page=1">자동차 및 오토바이</a></li>
+			<li><a href="../article/list?boardId=7&page=1">홈 및 주방용품</a></li>
+			<li><a href="../article/list?boardId=9&page=1">공구 및 원예</a></li>
+			<li><a href="../article/list?boardId=8&page=1">수집품 및 엔티크</a></li>
+			<li><a href="../article/list?boardId=10&page=1">기타</a></li>
 		</ul>
 		</div>
 		

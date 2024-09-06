@@ -20,7 +20,13 @@ public class Article {
 	private int price;
 	private int bid;
 	private int bidder_count;
+	private int goodReactionPoint;
 	private String remaining_time;
 	private String is_sold;
+	private String extra__writer;
+	
+
+	private boolean userCanModify;
+	private boolean userCanDelete;
 	
 }

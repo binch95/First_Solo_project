@@ -5,19 +5,44 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+
+
 public class Ut {
+
+	public static String jsReplace(String msg, String replaceUri) {
+
+		if (msg == null) {
+			msg = "";
+		}
+		if (replaceUri == null) {
+			replaceUri = "/";
+		}
+
+		return Ut.f("""
+					<script>
+						let msg = '%s';
+						if(msg.length > 0){
+							alert(msg);
+						}
+						location.replace('%s');
+					</script>
+				""", msg, replaceUri);
+	}
 
 	public static String jsReplace(String resultCode, String msg, String replaceUri) {
 
@@ -277,6 +302,57 @@ public class Ut {
 
 	public static <T> T reqAttr(HttpServletRequest req, String attrName, T defaultValue) {
 		return (T) ifNull(req.getAttribute(attrName), defaultValue);
+	}
+
+	public static Map<String, String> getParamMap(HttpServletRequest req) {
+		Map<String, String> param = new HashMap<>();
+
+		Enumeration<String> parameterNames = req.getParameterNames();
+
+		while (parameterNames.hasMoreElements()) {
+			String paramName = parameterNames.nextElement();
+			String paramValue = req.getParameter(paramName);
+
+			param.put(paramName, paramValue);
+		}
+
+		return param;
+	}
+
+	// sha256
+	public static String sha256(String input) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			byte[] hash = md.digest(input.getBytes("UTF-8"));
+			StringBuffer hexString = new StringBuffer();
+
+			for (int i = 0; i < hash.length; i++) {
+				String hex = Integer.toHexString(0xff & hash[i]);
+				if (hex.length() == 1)
+					hexString.append('0');
+				hexString.append(hex);
+			}
+
+			return hexString.toString();
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static String getTempPassword(int length) {
+		int index = 0;
+		char[] charArr = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
+				'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+
+		StringBuffer sb = new StringBuffer();
+
+		for (int i = 0; i < length; i++) {
+			index = (int) (charArr.length * Math.random());
+			sb.append(charArr[index]);
+		}
+
+		return sb.toString();
 	}
 
 }

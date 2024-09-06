@@ -1,6 +1,7 @@
 package com.example.project.vo;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -17,7 +18,8 @@ import lombok.Getter;
 @Component
 @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Rq {
-
+	@Getter
+	boolean isAjax;
 	@Getter
 	private boolean isLogined;
 	@Getter
@@ -30,6 +32,8 @@ public class Rq {
 
 	private HttpSession session;
 
+	private Map<String, String> paramMap;
+
 	public Rq(HttpServletRequest req, HttpServletResponse resp, MemberService memberService) {
 		this.req = req;
 		this.resp = resp;
@@ -37,13 +41,33 @@ public class Rq {
 
 		HttpSession httpSession = req.getSession();
 
+		paramMap = Ut.getParamMap(req);
+
 		if (httpSession.getAttribute("loginedMemberId") != null) {
 			isLogined = true;
 			loginedMemberId = (int) httpSession.getAttribute("loginedMemberId");
 			loginedMember = memberService.getMemberById(loginedMemberId);
 		}
-		System.out.println("123123 : " + this);
+
 		this.req.setAttribute("rq", this);
+
+		String requestUri = req.getRequestURI();
+
+		boolean isAjax = requestUri.endsWith("Ajax");
+
+		if (isAjax == false) {
+			if (paramMap.containsKey("ajax") && paramMap.get("ajax").equals("Y")) {
+				isAjax = true;
+			} else if (paramMap.containsKey("isAjax") && paramMap.get("isAjax").equals("Y")) {
+				isAjax = true;
+			}
+		}
+		if (isAjax == false) {
+			if (requestUri.contains("/get")) {
+				isAjax = true;
+			}
+		}
+		this.isAjax = isAjax;
 	}
 
 	public void printHistoryBack(String msg) throws IOException {
@@ -117,10 +141,17 @@ public class Rq {
 		return "../member/login?afterLoginUri=" + getAfterLoginUri();
 	}
 
-	private String getAfterLoginUri() {
+	public String getAfterLoginUri() {
 		return getEncodedCurrentUri();
 	}
 
+	public String jsReplace(String msg, String uri) {
+		return Ut.jsReplace(msg, uri);
+	}
+
+	public String getImgUri(int id) {
+		return "/common/genFile/file/article/" + id + "/extra/Img/1";
+	}
 
 	public String getProfileFallbackImgUri() {
 		return "https://via.placeholder.com/150/?text=*^_^*";
@@ -129,4 +160,30 @@ public class Rq {
 	public String getProfileFallbackImgOnErrorHtml() {
 		return "this.src = '" + getProfileFallbackImgUri() + "'";
 	}
+
+	public String getFindLoginIdUri() {
+		return "../member/findLoginId?afterFindLoginIdUri=" + getAfterFindLoginIdUri();
+	}
+
+	private String getAfterFindLoginIdUri() {
+		return getEncodedCurrentUri();
+	}
+
+	public String getFindLoginPwUri() {
+		return "../member/findLoginPw?afterFindLoginPwUri=" + getAfterFindLoginPwUri();
+	}
+
+	private String getAfterFindLoginPwUri() {
+		return getEncodedCurrentUri();
+	}
+
+	public boolean isAdmin() {
+		if (isLogined == false) {
+			return false;
+		}
+
+		return loginedMember.isAdmin();
+	}
+
 }
+
