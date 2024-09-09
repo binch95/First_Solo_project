@@ -19,6 +19,8 @@
 	overflow: hidden;
 	border: 2px solid #ddd;
 	border-radius: 5px;
+	
+	
 }
 
 table {
